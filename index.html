@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Новостная лента</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+            font-size: 18px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: #d10000;
+            color: white;
+            padding: 25px 0;
+            margin-bottom: 40px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 25px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+            font-size: 20px;
+        }
+
+        nav ul li a:hover {
+            opacity: 0.8;
+        }
+
+        .news-feed {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .news-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .news-card:hover {
+            transform: translateY(-7px);
+        }
+
+        .news-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .news-content {
+            padding: 25px;
+        }
+
+        .news-category {
+            display: inline-block;
+            background-color: #d10000;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-size: 16px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .news-title {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #222;
+            line-height: 1.3;
+        }
+
+        .news-excerpt {
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 18px;
+            line-height: 1.5;
+        }
+
+        .news-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #888;
+            font-size: 16px;
+        }
+
+        .read-more {
+            color: #d10000;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 15px;
+            transition: color 0.3s;
+            font-size: 18px;
+        }
+
+        .read-more:hover {
+            color: #a00000;
+        }
+
+        .featured-news {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Равные колонки */
+            min-height: 400px; /* Фиксированная высота */
+        }
+
+        .featured-news .news-image {
+            height: 100%; /* Занимает всю высоту */
+            background-color: #00ff00;
+        }
+
+        .featured-news .news-content {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            justify-content: center;
+        }
+
+        .featured-news .news-title {
+            font-size: 28px;
+        }
+
+        .featured-news .news-excerpt {
+            font-size: 20px;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 50px;
+        }
+
+        .page-numbers {
+            display: flex;
+            list-style: none;
+        }
+
+        .page-numbers li {
+            margin: 0 10px;
+        }
+
+        .page-numbers a {
+            display: block;
+            padding: 12px 20px;
+            background: white;
+            color: #333;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.3s;
+            font-size: 18px;
+        }
+
+        .page-numbers a:hover, .page-numbers a.active {
+            background: #d10000;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                font-size: 16px;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            nav ul {
+                margin-top: 20px;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            nav ul li {
+                margin: 10px 15px;
+            }
+
+            .logo {
+                font-size: 28px;
+            }
+
+            nav ul li a {
+                font-size: 18px;
+            }
+
+            .featured-news {
+                grid-template-columns: 1fr;
+                min-height: auto;
+            }
+
+            .featured-news .news-image {
+                height: 300px;
+            }
+
+            .featured-news .news-title {
+                font-size: 24px;
+            }
+
+            .featured-news .news-excerpt {
+                font-size: 18px;
+            }
+
+            .news-title {
+                font-size: 20px;
+            }
+
+            .news-excerpt {
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .news-feed {
+                grid-template-columns: 1fr;
+            }
+
+            .page-numbers li {
+                margin: 0 5px;
+            }
+
+            .page-numbers a {
+                padding: 8px 15px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">Новости дня</div>
+            <nav>
+                <ul>
+                    <li><a href="#">Главная</a></li>
+                    <li><a href="#">Политика</a></li>
+                    <li><a href="#">Экономика</a></li>
+                    <li><a href="#">Спорт</a></li>
+                    <li><a href="#">Культура</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="news-feed">
+            <!-- Featured news with green chromakey -->
+            <article class="news-card featured-news">
+                <div class="news-image"></div>
+                <div class="news-content">
+                    <span class="news-category">Главное</span>
+                    <h2 class="news-title">Ресторатор Завьялов чуть не убил 18-летнего Олега Каштанова. Администрация области бездействует!</h2>
+                    <p class="news-excerpt">Ресторатор Завьялов чуть не убил 18-летнего Олега Каштанова. Администрация области бездействует!» Это любительское кино произвело большое впечатление на губернатора.</p>
+                    <div class="news-meta">
+                        <span>Сегодня, 10:45</span>
+                        <span>Автор: Иван Петров</span>
+                    </div>
+                    <a href="#" class="read-more">Читать далее →</a>
+                </div>
+            </article>
+
+            <!-- Regular news cards -->
+            <article class="news-card">
+                <div class="news-content">
+                    <span class="news-category">Происшествия</span>
+                    <h2 class="news-title">Пенсионерка Самохина утверждает, что возле ресторана каждый вечер пьяные дебоши…</h2>
+                    <p class="news-excerpt">Антисанитария… Крысы… В плове гвозди… Ну и конечно, сотрудники - нелегальные мигранты…</p>
+                    <div class="news-meta">
+                        <span>Вчера, 14:20</span>
+                        <span>Автор: Мария Сидорова</span>
+                    </div>
+                    <a href="#" class="read-more">Читать далее →</a>
+                </div>
+            </article>
+
+            <article class="news-card">
+                <div class="news-content">
+                    <span class="news-category">Криминал</span>
+                    <h2 class="news-title">Под видом ресторана «Счастье с доставкой» скрывается нелегальный притон..</h2>
+                    <p class="news-excerpt">Аналитики объясняют причины резкого роста курса американской валюты и дают прогнозы на ближайшее время.</p>
+                    <div class="news-meta">
+                        <span>Вчера, 09:15</span>
+                        <span>Автор: Алексей Иванов</span>
+                    </div>
+                    <a href="#" class="read-more">Читать далее →</a>
+                </div>
+            </article>
+
+            <article class="news-card">
+                <div class="news-content">
+                    <span class="news-category">Животные</span>
+                    <h2 class="news-title">В ресторане "Счастье с доставкой" держат диких животных</h2>
+                    <p class="news-excerpt">Житель нашего города сообщил, что в заведении "Счастье с доставкой" держат диких животных. Ни много ни мало – тигров!</p>
+                    <div class="news-meta">
+                        <span>2 дня назад, 22:30</span>
+                        <span>Автор: Дмитрий Смирнов</span>
+                    </div>
+                    <a href="#" class="read-more">Читать далее →</a>
+                </div>
+            </article>
+        </div>
+
+        <div class="pagination">
+            <ul class="page-numbers">
+                <li><a href="#" class="active">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li>
+                <li><a href="#">→</a></li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
